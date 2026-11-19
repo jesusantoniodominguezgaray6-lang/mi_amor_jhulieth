@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#d77b79">
+  <title>Para Jhulieth</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      text-align: center;
+      background: linear-gradient(
+        to bottom,
+        #51436f 0%,
+        #a85e7d 30%,
+        #ed9277 55%,
+        #ffc985 72%,
+        #5c714e 100%
+      );
+    }
+
+    .paisaje {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .sol {
+      position: absolute;
+      top: 13%;
+      left: 50%;
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      background: #ffe5ad;
+      box-shadow: 0 0 75px 28px rgba(255, 222, 157, .45);
+      transform: translateX(-50%);
+    }
+
+    .colina {
+      position: absolute;
+      right: -15%;
+      bottom: -17%;
+      left: -15%;
+      height: 47%;
+      border-radius: 50% 50% 0 0;
+      background: #58704f;
+      transform: rotate(-4deg);
+    }
+
+    .colina-delantera {
+      position: absolute;
+      right: -20%;
+      bottom: -26%;
+      left: 20%;
+      height: 43%;
+      border-radius: 50% 50% 0 0;
+      background: #384f3e;
+      transform: rotate(5deg);
+    }
+
+    .contenido {
+      position: relative;
+      z-index: 2;
+      width: min(92%, 650px);
+      margin: 0 auto;
+      padding: 45px 18px 125px;
+    }
+
+    h1 {
+      margin: 12px 0;
+      color: #fff8e9;
+      font-size: clamp(2.2rem, 9vw, 3.6rem);
+      font-weight: normal;
+      text-shadow: 0 2px 18px rgba(255,255,255,.4);
+    }
+
+    .intro {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(67, 45, 70, .36);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+
+    .mensaje {
+      position: fixed;
+      right: 16px;
+      bottom: 86px;
+      left: 16px;
+      z-index: 5;
+      max-width: 520px;
+      min-height: 58px;
+      margin: 0 auto;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 18px;
+      background: rgba(66, 45, 67, .88);
+      box-shadow: 0 8px 28px rgba(40, 25, 45, .25);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    .flores-cayendo {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .flor {
+      position: absolute;
+      top: -90px;
+      width: 68px;
+      height: 78px;
+      padding: 4px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      pointer-events: auto;
+      touch-action: manipulation;
+      filter: drop-shadow(0 3px 7px rgba(255,255,255,.45));
+      animation: caer var(--duracion) linear var(--retraso) infinite;
+    }
+
+    .flor svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .petalo {
+      fill: #fffdf6;
+      stroke: #eadfcf;
+      stroke-width: 1;
+    }
+
+    .centro { fill: #e7b958; }
+
+    @keyframes caer {
+      0% { transform: translateY(-15vh) rotate(0deg); }
+      100% { transform: translateY(115vh) rotate(300deg); }
+    }
+
+    .musica {
+      position: fixed;
+      right: 12px;
+      bottom: 15px;
+      left: 12px;
+      z-index: 6;
+      text-align: center;
+    }
+
+    .boton-musica {
+      padding: 12px 20px;
+      border: 1px solid #fff4e8;
+      border-radius: 25px;
+      color: white;
+      background: rgba(67, 45, 70, .85);
+      font: inherit;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .boton-musica:hover {
+      background: rgba(67, 45, 70, 1);
+    }
+
+    .nota {
+      margin: 7px 0 0;
+      color: white;
+      font: 12px Arial, sans-serif;
+      text-shadow: 0 1px 4px #443;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .flor { animation-duration: 24s; }
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="musicaFondo" autoplay loop preload="auto">
+    <source src="whastApp-audio.mp3.mpeg" type="audio/mpeg">
+  </audio>
+
+  <div class="paisaje" aria-hidden="true">
+    <div class="sol"></div>
+    <div class="colina"></div>
+    <div class="colina-delantera"></div>
+  </div>
+
+  <main class="contenido">
+    <h1>Para Jhulieth</h1>
+    <p class="intro">
+      Un atardecer bonito y diez lirios para recordarte lo especial que eres.
+      ¡Toca las flores mientras caen! 🤍
+    </p>
+  </main>
+
+  <div class="flores-cayendo" id="flores"
+       aria-label="Lirios que caen; toca uno para leer una frase">
+  </div>
+
+  <div class="mensaje" id="mensaje" aria-live="polite">
+    Toca uno de los lirios que cae para descubrir su frase ✨
+  </div>
+
+  <div class="musica">
+    <button class="boton-musica" id="botonMusica" type="button">
+      ▶ Activar música
+    </button>
+    <p class="nota" id="nota">
+      La música intenta empezar automáticamente.
+    </p>
+  </div>
+
+  <script>
+    const frases = [
+      "solo en pensarte me vuelves loco.",
+      "Gracias por formar parte de mi vida.",
+      "de verdad te amo de una manera que ni tu imaginas❤️.",
+      "siempre seras mi bebe hermosha❤️.",
+      "pienso en cuidarte tu corazon❤️❤️.",
+      "tenerte a ti a mejorado tanto mi vida que hasta el dia mas sencillo lo valoro tanto como te tengo a ti❤️.",
+      "Gracias por ser parte de mi vida enserio.",
+      "Tu cariño es un regalo que aprecio muchísimo.",
+      "Ojalá nunca olvides lo especial que eres para mí.",
+      "Te mereces todo lo bonito que este mundo puede ofrecer."
+    ];
+
+    const contenedor = document.getElementById("flores");
+    const mensaje = document.getElementById("mensaje");
+
+    const dibujoLirio = `
+      <svg viewBox="0 0 100 110" aria-hidden="true">
+        <path d="M50 54 C48 76 53 91 50 108"
+              fill="none" stroke="#9bc18b" stroke-width="5"/>
+        <path d="M50 83 C33 72 26 81 47 91" fill="#9bc18b"/>
+        <path d="M51 94 C66 81 75 87 54 101" fill="#a9cf91"/>
+        <g>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"/>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"
+                   transform="rotate(60 50 54)"/>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"
+                   transform="rotate(120 50 54)"/>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"
+                   transform="rotate(180 50 54)"/>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"
+                   transform="rotate(240 50 54)"/>
+          <ellipse class="petalo" cx="50" cy="29" rx="9" ry="25"
+                   transform="rotate(300 50 54)"/>
+        </g>
+        <circle class="centro" cx="50" cy="54" r="6"/>
+      </svg>
+    `;
+
+    frases.forEach(function (frase, indice) {
+      const flor = document.createElement("button");
+
+      flor.className = "flor";
+      flor.type = "button";
+      flor.innerHTML = dibujoLirio;
+      flor.setAttribute(
+        "aria-label",
+        "Lirio " + (indice + 1) + ". Toca para ver una frase."
+      );
+
+      flor.style.left = (4 + indice * 9.5) + "%";
+      flor.style.setProperty("--duracion", (10 + indice % 5 * 2) + "s");
+      flor.style.setProperty("--retraso", (-indice * 1.7) + "s");
+
+      flor.addEventListener("click", function () {
+        mensaje.textContent = frase;
+      });
+
+      contenedor.appendChild(flor);
+    });
+
+    const musicaFondo = document.getElementById("musicaFondo");
+    const botonMusica = document.getElementById("botonMusica");
+    const nota = document.getElementById("nota");
+
+    botonMusica.addEventListener("click", async function () {
+      if (musicaFondo.paused) {
+        try {
+          await musicaFondo.play();
+          botonMusica.textContent = "❚❚ Pausar música";
+          nota.textContent = "La música está sonando.";
+        } catch {
+          nota.textContent =
+            "No se pudo reproducir. Revisa que el archivo de audio esté junto al HTML.";
+        }
+      } else {
+        musicaFondo.pause();
+        botonMusica.textContent = "▶ Activar música";
+        nota.textContent = "La música está pausada.";
+      }
+    });
+
+    musicaFondo.addEventListener("play", function () {
+      botonMusica.textContent = "❚❚ Pausar música";
+    });
+
+    musicaFondo.addEventListener("pause", function () {
+      botonMusica.textContent = "▶ Activar música";
+    });
+
+    musicaFondo.addEventListener("error", function () {
+      nota.textContent =
+        "No se encontró whastApp-audio.mp3.mpeg. Pon el audio junto a jhulieth.html.";
+    });
+
+    musicaFondo.play().catch(function () {
+      nota.textContent =
+        "Toca “Activar música” para escucharla en el celular.";
+    });
+  </script>
+</body>
+</html>
